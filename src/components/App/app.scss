@@ -1,0 +1,15 @@
+body {
+	background-color: #E5E5E5 !important;
+}
+
+.app-layout {
+	background-color: #FFFFFF;
+	max-width: 1010px;
+	min-height: 100% !important;
+	margin: 0 auto;
+	padding: 0 32px;
+
+	@media (max-width: 970px) { 
+    padding: 0 10px;
+  }
+}

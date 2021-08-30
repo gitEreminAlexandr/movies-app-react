@@ -1,0 +1,34 @@
+.movies {  
+  padding: 30px;  
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;  
+};
+
+.ant-tabs-nav{
+  margin-top: 15px !important;
+  border-color:white; 
+  position: inherit !important;
+  &::before {
+    content: '';
+    display: none;
+  };
+};
+
+.ant-tabs-nav-wrap{
+  justify-content:center;  
+  font-size: 14px;
+  line-height: 22px;  
+};
+
+.ant-tabs-nav-list{
+  box-shadow: inset 0px -1px 0px rgba(0, 0, 0, 0.09);
+};
+
+.ant-tabs-tab{
+  margin: 0 !important;
+};
+
+.ant-tabs-tab-btn{
+  padding: 10px;
+};

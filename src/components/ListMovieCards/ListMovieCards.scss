@@ -1,0 +1,42 @@
+.list-movie-cards__item {
+  width: 454px;
+  height: 281px;
+  margin-bottom: 30px;
+  margin-left: 3px;
+  margin-right: 3px;
+  box-shadow: 0px 0px 5px rgb(110, 109, 109);
+  
+  @media (max-width: 927px) { 
+    justify-content: center;
+    width: 382px;
+    height: 245px;
+  };
+  
+};
+
+.ant-row {
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  @media (max-width: 927px) { 
+    justify-content: center;
+  };
+
+  &__pagination {
+    width: 100%;
+    justify-content: center;
+  };
+};
+
+.ant-list-pagination {
+  text-align: center !important;
+  padding-bottom: 10px;
+};
+
+.ant-pagination-item-active {
+  background-color: #1890FF !important;
+
+  & a {
+    color: #FFFFFF !important;
+  };
+};

@@ -1,0 +1,101 @@
+.movie-cards {
+  position: relative;
+  &__poster {
+    &--img {
+      width: 183px;
+      height: 281px;
+
+      @media (max-width: 927px) { 
+        width: 60px;
+        height: 91px;
+      };    
+    };
+  };
+
+  &__info {
+    margin: 5px;
+
+    &__blok-name-rating {
+      margin-bottom: 0 !important;
+    };
+
+    &--name {
+      width: 230px;
+      height: 100%;
+
+      @media (max-width: 927px) { 
+        width: 280px;
+      };
+    };
+
+    &--rating {
+      width: 30px;
+      height: 30px;
+      padding-top: 3px;
+      text-align: center;
+      border-radius: 50%;
+      font-size: 12px;
+    };
+
+    &--genre {
+      margin-bottom: 5px;
+      width: 260px;
+      max-height: 40px;
+      font-size: 11px;
+
+      @media (max-width: 927px) { 
+        margin-bottom: 15px;
+      };
+    }
+
+    &--description {
+      width: 255px;
+
+      & p {
+
+        @media (max-width: 927px) { 
+          position: relative;
+          width: 360px;
+          right: 55px;
+        };
+      };
+    };
+  };
+
+  &__appraisal {
+    width: 260px;
+    position: absolute;
+    bottom: 35px;
+    left: 190px;
+
+    @media (max-width: 927px) { 
+      bottom: -5px;
+      left: 55px;
+     
+    };
+
+    & ul {
+      & li {
+        font-size: 18px;
+      };
+    };
+  };
+};
+
+.color-border-rating- {
+  &short {
+    border: solid 3px #E90000;
+  }
+
+  &normal {
+    border: solid 3px #E97E00;
+  }
+
+  &good {
+    border: solid 3px #E9D100;
+  }
+
+  &high {
+    border: solid 3px #66E900;
+  }
+}
