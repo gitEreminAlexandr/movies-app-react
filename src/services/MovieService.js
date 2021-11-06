@@ -75,8 +75,12 @@ export default class MovieService {
   }
 
   async getTrendingMovies() {
-    this.getToken();
 
+    const token = getCookie('token');
+    if (!token) {
+      this.getToken();
+    }
+    
     return this.getResource(`${this.apiBase}trending/movie/day?api_key=${this.apiKey}`)
       .then((result) => result.results)
       .then((arrMovei) => arrMovei.map((element) => this.newObjectMovie(element)));
