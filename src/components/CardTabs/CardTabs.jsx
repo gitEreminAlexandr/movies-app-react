@@ -127,7 +127,7 @@ class CardTabs extends Component {
     const errorMassage = error ? <ErrorIndicator /> : null;
     const spinner = loading ? <Spinner /> : null;
     const content = hasData ? <ListMovieCards movieList={movieList} rateMovie={this.rateMovie} numberPages={numberPages} pageList={pageList} onChangePage={this.changePage}/> : null;
-    const contentRate = <ListMovieCards movieList={moviesListRate} rateMovie={this.rateMovie} />;
+    const contentRate = <ListMovieCards movieList={moviesListRate} rateMovie={this.rateMovie} numberPages={numberPages} pageList={pageList} onChangePage={this.changePage}/>;
 
     return (
       <GenresProvider value={genresList}>

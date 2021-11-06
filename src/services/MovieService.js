@@ -26,11 +26,6 @@ export default class MovieService {
   async rateMovieById(movieId, data) {
     const token = getCookie('token');
 
-    if (token === undefined) {
-      this.getToken();
-      this.rateMovieById();
-    }
-
     const res = await fetch(
       `${this.apiBase}movie/${movieId}/rating?&api_key=${this.apiKey}&guest_session_id=${token}`,
       {
@@ -80,6 +75,8 @@ export default class MovieService {
   }
 
   async getTrendingMovies() {
+    this.getToken();
+
     return this.getResource(`${this.apiBase}trending/movie/day?api_key=${this.apiKey}`)
       .then((result) => result.results)
       .then((arrMovei) => arrMovei.map((element) => this.newObjectMovie(element)));
@@ -99,7 +96,6 @@ export default class MovieService {
         const arrMovies =  results.map((element) => this.newObjectMovie(element));
         return { results: arrMovies, numberPages };
       });
-      // .then((arrMovei) => arrMovei.map((element) => this.newObjectMovie(element)));
   }
 }
 
