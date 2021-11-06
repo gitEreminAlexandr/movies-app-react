@@ -12,7 +12,8 @@ class SearchInput extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { label } = this.state;
     if (label !== prevState.label) {
-      const { onSearchInput } = this.props;
+      const { onSearchInput, onSearchLoadingOn } = this.props;
+      onSearchLoadingOn();
       onSearchInput(label);
     }
   }
@@ -38,7 +39,7 @@ class SearchInput extends Component {
           <Input
             className="search--input"
             placeholder="Type to search..."
-            onChange={this.debounceEvent(this.onLabelChange, 2800)}
+            onChange={this.debounceEvent(this.onLabelChange, 800)}
           />
         </Col>
       </Row>
@@ -48,10 +49,12 @@ class SearchInput extends Component {
 
 SearchInput.defaultProps = {
   onSearchInput: () => {},
+  onSearchLoadingOn: () => {},
 };
 
 SearchInput.propTypes = {
   onSearchInput: PropTypes.func,
+  onSearchLoadingOn: PropTypes.func,
 };
 
 export default SearchInput;

@@ -40,3 +40,9 @@
     color: #FFFFFF !important;
   };
 };
+
+.ant-spin-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

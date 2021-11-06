@@ -1,8 +1,9 @@
+import { setCookie, getCookie } from "../utils/utils";
+
 export default class MovieService {
   constructor() {
     this.apiBase = 'https://api.themoviedb.org/3/';
     this.apiKey = 'd616b7e180ca490592633d1a5982969d';
-    this.tokenId = null;
   }
 
   async getResource(url) {
@@ -19,18 +20,19 @@ export default class MovieService {
     const urlGetToken = `${this.apiBase}authentication/guest_session/new?&api_key=${this.apiKey}`;
     const sessionId = await this.getResource(urlGetToken);
 
-    this.tokenId = sessionId.guest_session_id;
-
-    return sessionId.guest_session_id;
+    setCookie('token', sessionId.guest_session_id, { secure: true, 'max-age': 97200 });
   }
 
   async rateMovieById(movieId, data) {
-    if (this.tokenId === null) {
-      this.tokenId = await this.getToken();
+    const token = getCookie('token');
+
+    if (token === undefined) {
+      this.getToken();
+      this.rateMovieById();
     }
 
     const res = await fetch(
-      `${this.apiBase}movie/${movieId}/rating?&api_key=${this.apiKey}&guest_session_id=${this.tokenId}`,
+      `${this.apiBase}movie/${movieId}/rating?&api_key=${this.apiKey}&guest_session_id=${token}`,
       {
         method: 'POST',
         headers: {
@@ -69,7 +71,7 @@ export default class MovieService {
       id: objectMovie.id,
       name: objectMovie.title,
       description: this.editDescription(objectMovie.overview),
-      poster: `https://image.tmdb.org/t/p/original${objectMovie.poster_path}`,
+      poster: objectMovie.poster_path === null ? 'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/no-internet-poster-template-design-996432a5f193ca3fd6bd8b57d0b0210f_screen.jpg?ts=1591381528' : `https://image.tmdb.org/t/p/original${objectMovie.poster_path}`,
       date: objectMovie.release_date,
       appraisal: this.editAppraisal(objectMovie.vote_average),
       userRating: objectMovie.rating,
@@ -84,14 +86,20 @@ export default class MovieService {
   }
 
   async getRatedMovies() {
-    return this.getResource(`${this.apiBase}guest_session/${this.tokenId}/rated/movies?api_key=${this.apiKey}`)
+    const token = getCookie('token')
+
+    return this.getResource(`${this.apiBase}guest_session/${token}/rated/movies?api_key=${this.apiKey}`)
       .then((result) => result.results)
       .then((arrMovei) => arrMovei.map((element) => this.newObjectMovie(element)));
   }
 
-  getSearchMovie(search) {
-    return this.getResource(`${this.apiBase}search/movie?api_key=${this.apiKey}&query=${search}&language=en-US`)
-      .then((res) => res.results)
-      .then((arrMovei) => arrMovei.map((element) => this.newObjectMovie(element)));
+  getSearchMovie(search, page) {
+    return this.getResource(`${this.apiBase}search/movie?api_key=${this.apiKey}&query=${search}&language=en-US&page=${page}`)
+      .then(({results, total_results: numberPages}) => {
+        const arrMovies =  results.map((element) => this.newObjectMovie(element));
+        return { results: arrMovies, numberPages };
+      });
+      // .then((arrMovei) => arrMovei.map((element) => this.newObjectMovie(element)));
   }
 }
+

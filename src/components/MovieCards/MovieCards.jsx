@@ -30,7 +30,7 @@ const MovieCards = ({ id, name, appraisal, date, description, poster, genre, use
           <Col className={colorBorderRating}>{appraisal}</Col>
         </Row>
         <Col className="movie-cards__info--data">
-          <Text type="secondary">{format(new Date(date), 'MMMM dd, yyyy')}</Text>
+          <Text type="secondary">{date && format(new Date(date), 'MMMM dd, yyyy')}</Text>
         </Col>
         <Col className="movie-cards__info--genre">
           <Genres genre={genre} />
