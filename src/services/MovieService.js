@@ -1,4 +1,4 @@
-import { setCookie, getCookie } from "../utils/utils";
+import { setCookie, getCookie } from '../utils/utils';
 
 export default class MovieService {
   constructor() {
@@ -66,7 +66,10 @@ export default class MovieService {
       id: objectMovie.id,
       name: objectMovie.title,
       description: this.editDescription(objectMovie.overview),
-      poster: objectMovie.poster_path === null ? 'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/no-internet-poster-template-design-996432a5f193ca3fd6bd8b57d0b0210f_screen.jpg?ts=1591381528' : `https://image.tmdb.org/t/p/original${objectMovie.poster_path}`,
+      poster:
+        objectMovie.poster_path === null
+          ? 'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/no-internet-poster-template-design-996432a5f193ca3fd6bd8b57d0b0210f_screen.jpg?ts=1591381528'
+          : `https://image.tmdb.org/t/p/original${objectMovie.poster_path}`,
       date: objectMovie.release_date,
       appraisal: this.editAppraisal(objectMovie.vote_average),
       userRating: objectMovie.rating,
@@ -75,19 +78,18 @@ export default class MovieService {
   }
 
   async getTrendingMovies() {
-
     const token = getCookie('token');
     if (!token) {
       this.getToken();
     }
-    
+
     return this.getResource(`${this.apiBase}trending/movie/day?api_key=${this.apiKey}`)
       .then((result) => result.results)
       .then((arrMovei) => arrMovei.map((element) => this.newObjectMovie(element)));
   }
 
   async getRatedMovies() {
-    const token = getCookie('token')
+    const token = getCookie('token');
 
     return this.getResource(`${this.apiBase}guest_session/${token}/rated/movies?api_key=${this.apiKey}`)
       .then((result) => result.results)
@@ -95,11 +97,11 @@ export default class MovieService {
   }
 
   getSearchMovie(search, page) {
-    return this.getResource(`${this.apiBase}search/movie?api_key=${this.apiKey}&query=${search}&language=en-US&page=${page}`)
-      .then(({results, total_results: numberPages}) => {
-        const arrMovies =  results.map((element) => this.newObjectMovie(element));
-        return { results: arrMovies, numberPages };
-      });
+    return this.getResource(
+      `${this.apiBase}search/movie?api_key=${this.apiKey}&query=${search}&language=en-US&page=${page}`
+    ).then(({ results, total_results: numberPages }) => {
+      const arrMovies = results.map((element) => this.newObjectMovie(element));
+      return { results: arrMovies, numberPages };
+    });
   }
 }
-

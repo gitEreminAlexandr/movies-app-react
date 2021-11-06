@@ -31,53 +31,52 @@ class CardTabs extends Component {
         loading: false,
       });
     });
-    
   }
 
   componentDidUpdate(prevPropps, prevState) {
-    const {movieSearch, pageList, moviesListRate} = this.state;
+    const { movieSearch, pageList, moviesListRate } = this.state;
 
     if (moviesListRate !== prevState.moviesListRate) {
-      this.assessmontMovies()
+      this.assessmontMovies();
     }
 
-    if(prevState.movieSearch !== movieSearch || prevState.pageList !== pageList) {
+    if (prevState.movieSearch !== movieSearch || prevState.pageList !== pageList) {
       this.movieService
-      .getSearchMovie(movieSearch, pageList)
-      .then(({ results, numberPages }) => {
-        this.setState({
-          movieList: results,
-          numberPages,
-          loading: false,
-        })}
-      )
-      .catch(this.onError);
-      if(prevState.pageList !== pageList) {
+        .getSearchMovie(movieSearch, pageList)
+        .then(({ results, numberPages }) => {
+          this.setState({
+            movieList: results,
+            numberPages,
+            loading: false,
+          });
+        })
+        .catch(this.onError);
+      if (prevState.pageList !== pageList) {
         window.scrollTo(0, 0);
       }
     }
   }
 
   assessmontMovies = () => {
-    const {movieList} = this.state;
+    const { movieList } = this.state;
     const newMovieArr = movieList.map(this.checkForAssessmentMoviesList);
 
     this.setState({
-      movieList: newMovieArr
-    })
-  }
+      movieList: newMovieArr,
+    });
+  };
 
   checkForAssessmentMoviesList = (movie) => {
     const { moviesListRate } = this.state;
     let newMovie = movie;
 
-    moviesListRate.forEach(item => {
+    moviesListRate.forEach((item) => {
       if (newMovie.id === item.id) {
-        newMovie = {...item}
+        newMovie = { ...item };
       }
-    })
+    });
     return newMovie;
-  }
+  };
 
   getRateMovies = () => {
     this.movieService.getRatedMovies().then((result) =>
@@ -99,7 +98,7 @@ class CardTabs extends Component {
     }
     return this.setState({
       movieSearch: text,
-    })
+    });
   };
 
   onError = () => {
@@ -124,7 +123,6 @@ class CardTabs extends Component {
       }
       return item;
     });
-    
 
     this.setState({
       movieList: newMovieList,
@@ -137,14 +135,14 @@ class CardTabs extends Component {
     this.setState({
       loading: true,
       pageList: page,
-    })
-  }
+    });
+  };
 
   searchLoadingOn = () => {
     this.setState({
       loading: true,
     });
-  }
+  };
 
   render() {
     const { TabPane } = Tabs;
@@ -153,14 +151,30 @@ class CardTabs extends Component {
     const hasData = !(loading || error);
     const errorMassage = error ? <ErrorIndicator /> : null;
     const spinner = loading ? <Spinner /> : null;
-    const content = hasData ? <ListMovieCards movieList={movieList} rateMovie={this.rateMovie} numberPages={numberPages} pageList={pageList} onChangePage={this.changePage}/> : null;
-    const contentRate = <ListMovieCards movieList={moviesListRate} rateMovie={this.rateMovie} numberPages={0} pageList={pageList} onChangePage={this.changePage}/>;
+    const content = hasData ? (
+      <ListMovieCards
+        movieList={movieList}
+        rateMovie={this.rateMovie}
+        numberPages={numberPages}
+        pageList={pageList}
+        onChangePage={this.changePage}
+      />
+    ) : null;
+    const contentRate = (
+      <ListMovieCards
+        movieList={moviesListRate}
+        rateMovie={this.rateMovie}
+        numberPages={0}
+        pageList={pageList}
+        onChangePage={this.changePage}
+      />
+    );
 
     return (
       <GenresProvider value={genresList}>
-        <Tabs defaultActiveKey="1" centered onTabClick={( this.getRateMovies)}>
+        <Tabs defaultActiveKey="1" centered onTabClick={this.getRateMovies}>
           <TabPane tab="Search" key="1">
-            <SearchInput onSearchInput={this.onSearchInput} onSearchLoadingOn={this.searchLoadingOn}/>
+            <SearchInput onSearchInput={this.onSearchInput} onSearchLoadingOn={this.searchLoadingOn} />
             {content}
             {spinner}
             {errorMassage}

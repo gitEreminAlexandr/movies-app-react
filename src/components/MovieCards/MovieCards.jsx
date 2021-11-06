@@ -40,7 +40,13 @@ const MovieCards = ({ id, name, appraisal, date, description, poster, genre, use
         </Col>
       </Col>
       <Col className="movie-cards__appraisal">
-        <Rate allowHalf value={userRating} onChange={(value) => rateMovie(id, { value })} count={10} />
+        <Rate
+          allowHalf
+          value={userRating}
+          onChange={(value) => rateMovie(id, { value })}
+          count={10}
+          allowClear={false}
+        />
       </Col>
     </Row>
   );

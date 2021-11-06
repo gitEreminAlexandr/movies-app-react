@@ -17,7 +17,17 @@ const ListMovieCards = ({ movieList, rateMovie, numberPages, onChangePage, pageL
       </Col>
     )}
   >
-    {numberPages === 0 ? null : <Pagination size="small" onChange={page => onChangePage(page)}  pageSize={20} defaultCurrent={pageList} responsive total={numberPages} showSizeChanger={false}/>}
+    {numberPages === 0 ? null : (
+      <Pagination
+        size="small"
+        onChange={(page) => onChangePage(page)}
+        pageSize={20}
+        defaultCurrent={pageList}
+        responsive
+        total={numberPages}
+        showSizeChanger={false}
+      />
+    )}
   </List>
 );
 
