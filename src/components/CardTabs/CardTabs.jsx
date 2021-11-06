@@ -23,6 +23,7 @@ class CardTabs extends Component {
   movieService = new MovieService();
 
   componentDidMount() {
+    this.getRateMovies();
     this.movieService.getGenres().then((result) => this.setState({ genresList: result }));
     this.movieService.getTrendingMovies().then((movieArr) => {
       this.setState({
@@ -30,10 +31,15 @@ class CardTabs extends Component {
         loading: false,
       });
     });
+    
   }
 
   componentDidUpdate(prevPropps, prevState) {
-    const {movieSearch, pageList} = this.state;
+    const {movieSearch, pageList, moviesListRate} = this.state;
+
+    if (moviesListRate !== prevState.moviesListRate) {
+      this.assessmontMovies()
+    }
 
     if(prevState.movieSearch !== movieSearch || prevState.pageList !== pageList) {
       this.movieService
@@ -50,6 +56,27 @@ class CardTabs extends Component {
         window.scrollTo(0, 0);
       }
     }
+  }
+
+  assessmontMovies = () => {
+    const {movieList} = this.state;
+    const newMovieArr = movieList.map(this.checkForAssessmentMoviesList);
+
+    this.setState({
+      movieList: newMovieArr
+    })
+  }
+
+  checkForAssessmentMoviesList = (movie) => {
+    const { moviesListRate } = this.state;
+    let newMovie = movie;
+
+    moviesListRate.forEach(item => {
+      if (newMovie.id === item.id) {
+        newMovie = {...item}
+      }
+    })
+    return newMovie;
   }
 
   getRateMovies = () => {
@@ -127,7 +154,7 @@ class CardTabs extends Component {
     const errorMassage = error ? <ErrorIndicator /> : null;
     const spinner = loading ? <Spinner /> : null;
     const content = hasData ? <ListMovieCards movieList={movieList} rateMovie={this.rateMovie} numberPages={numberPages} pageList={pageList} onChangePage={this.changePage}/> : null;
-    const contentRate = <ListMovieCards movieList={moviesListRate} rateMovie={this.rateMovie} numberPages={numberPages} pageList={pageList} onChangePage={this.changePage}/>;
+    const contentRate = <ListMovieCards movieList={moviesListRate} rateMovie={this.rateMovie} numberPages={0} pageList={pageList} onChangePage={this.changePage}/>;
 
     return (
       <GenresProvider value={genresList}>
